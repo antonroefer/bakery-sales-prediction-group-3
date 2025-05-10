@@ -63,3 +63,4 @@ for col in umsatz_columns:
     plt.ylabel("Durchschnittlicher Umsatz")
     plt.xticks(rotation=45)
     plt.tight_layout()
+    plt.savefig(f"Plots/{col}.png")
