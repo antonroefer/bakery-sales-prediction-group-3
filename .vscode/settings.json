@@ -17,6 +17,7 @@
         "CoverImage": "images",
         "External": "cloudflare",
         "Internal": "node",
+        "Plots": "gradle"
     },
     "jupyter.interactiveWindow.textEditor.executeSelection": true,
     "jupyter.askForKernelRestart": false,
