@@ -61,3 +61,16 @@ print(merged_df.dtypes)
 print(merged_df["id"])
 
 merged_df.to_html("merged_df.html", index=False)
+
+training_df = merged_df[(merged_df["Datum"] <= "2017-07-31")]
+validation_df = merged_df[
+    (merged_df["Datum"] >= "2017-08-01") & (merged_df["Datum"] < "2018-07-31")
+]
+test_df = merged_df[(merged_df["Datum"] >= "2018-08-01")]
+
+print("\nTraining set:")
+print(training_df.head())
+print("\nValidation set:")
+print(validation_df.head())
+print("\nTest set:")
+print(test_df.head())
