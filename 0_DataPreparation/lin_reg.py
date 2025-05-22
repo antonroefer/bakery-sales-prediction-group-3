@@ -56,10 +56,10 @@ merged_df["id"] = merged_df["id"].astype(int)
 
 
 # Checking the data types
-print("\nData types:")
-print(merged_df.dtypes)
+# print("\nData types:")
+# print(merged_df.dtypes)
 
-print(merged_df["id"])
+# print(merged_df["id"])
 
 merged_df.to_html("merged_df.html", index=False)
 
