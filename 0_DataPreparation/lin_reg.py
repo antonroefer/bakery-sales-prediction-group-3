@@ -1,5 +1,5 @@
 import pandas as pd
-from sklearn.linear_model import LinearRegression
+from scipy.stats import linregress
 
 # Sales data
 umsatzdaten = pd.read_csv("Internal/umsatzdaten_gekuerzt.csv")
@@ -72,14 +72,37 @@ test_df = merged_df[
     (merged_df["Datum"] > "2018-07-31") & (merged_df["Datum"] <= "2019-07-31")
 ]
 
-training_df = training_df[["Temperatur", "Umsatz"]].dropna()
+# After creating test_df with the date filter
+print(f"Initial test_df shape: {test_df.shape}")
+print(f"Test period date range: {test_df['Datum'].min()} to {test_df['Datum'].max()}")
+print(f"Count of non-null temperature values: {test_df['Temperatur'].count()}")
 
-X = training_df[["Temperatur"]]  # ✅ 2D
-y = training_df["Umsatz"]  # ✅ 1D
+# Look at a few rows to check the data
+print(test_df[["Datum", "Temperatur"]].head())
 
-modell = LinearRegression()
-modell.fit(X, y)
+# If you find rows with NaN temperature, check why they didn't merge properly
+if test_df["Temperatur"].isna().any():
+    missing_temp = test_df[test_df["Temperatur"].isna()]
+    print(f"Sample dates with missing temperature: {missing_temp['Datum'].head()}")
 
-print("Steigung (Slope):", modell.coef_[0])
-print("Achsenabschnitt (Intercept):", modell.intercept_)
-print("Bestimmtheitsmaß R²:", modell.score(X, y))
+# Drop rows with missing values in 'Temperatur' or 'Umsatz'
+train = training_df.dropna(subset=["Temperatur", "Umsatz"])
+
+# Perform linear regression
+slope, intercept, r_value, p_value, std_err = linregress(
+    train["Temperatur"], train["Umsatz"]
+)
+
+print(f"Slope: {slope}")
+print(f"Intercept: {intercept}")
+print(f"R-squared: {r_value**2}")
+
+# Predict 'Umsatz' for the test set using the linear regression formula
+test_df = test_df.dropna(subset=["Temperatur"])
+test_df["Umsatz_pred"] = intercept + slope * test_df["Temperatur"]
+
+# Optionally, print or save the predictions
+print(test_df[["Datum", "Warengruppe", "Temperatur", "Umsatz_pred"]].head())
+
+# Export training data with 'id' and 'Umsatz' columns to CSV
+test_df[["id", "Umsatz_pred"]].to_csv("test_id_umsatz.csv", index=False)
