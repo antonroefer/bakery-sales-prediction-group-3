@@ -142,6 +142,6 @@ test_df = merged_df[
     (merged_df["Datum"] >= "2018-08-01") & (merged_df["Datum"] <= "2019-07-31")
 ]
 
-print("\nTraining set shape:", training_df.shape)
-print("Validation set shape:", validation_df.shape)
-print("Test set shape:", test_df.shape)
+# print("\nTraining set shape:", training_df.shape)
+# print("Validation set shape:", validation_df.shape)
+# print("Test set shape:", test_df.shape)
