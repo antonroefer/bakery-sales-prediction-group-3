@@ -49,9 +49,9 @@ for jahr, df in jahres_daten.items():
         .to_numpy()
     )
 
-    # Savitzky-Golay-Filter anwenden: Fenstergröße (z.B. 11) und Polynomgrad (z.B. 3)
+    # Savitzky-Golay-Filter anwenden: Fenstergröße (z.B. 50) und Polynomgrad (z.B. 3)
     temperatur_geglättet = savgol_filter(
-        temperatur_interpoliert, window_length=11, polyorder=3
+        temperatur_interpoliert, window_length=200, polyorder=3
     )
 
     # Geglättete Werte im DataFrame speichern
