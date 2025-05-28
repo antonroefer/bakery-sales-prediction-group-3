@@ -2,13 +2,13 @@ import pandas as pd
 from scipy.stats import linregress
 
 # Sales data
-umsatzdaten = pd.read_csv("Internal/umsatzdaten_gekuerzt.csv")
+umsatzdaten = pd.read_csv("../0_DataPreparation/Internal/umsatzdaten_gekuerzt.csv")
 
 # Weather data
-wetter = pd.read_csv("Internal/wetter.csv")
+wetter = pd.read_csv("../0_DataPreparation/Internal/wetter.csv")
 
 # Kieler Woche data
-kiwo = pd.read_csv("Internal/kiwo.csv")
+kiwo = pd.read_csv("../0_DataPreparation/Internal/kiwo.csv")
 
 # Ensure date format is consistent
 umsatzdaten["Datum"] = pd.to_datetime(umsatzdaten["Datum"])
