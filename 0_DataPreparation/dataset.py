@@ -47,6 +47,16 @@ vpi = pd.read_csv("External/VPI_modified.csv")
 vpi["Datum"] = pd.to_datetime(vpi["Datum"]).dt.strftime("%Y-%m-%d")
 data = pd.merge(data, vpi[["Datum", "VPI"]], on="Datum", how="left")
 
+#Load precipitation data
+precipitation = pd.read_csv("External/precipitation.txt", sep= ",")
+precipitation["Datum"] = pd.to_datetime(precipitation["Datum"], format="%Y-%m-%d").dt.strftime("%Y-%m-%d")
+# Create 'prec_categorie' column based on precipitation boundaries
+bins = [-float("inf"), 2.5, 7.5, 36, 65, float("inf")]
+labels = [0, 1, 2, 3, 4]
+precipitation["Niederschlag"] = pd.cut(precipitation["Precipitation_mm"], bins=bins, labels=labels, right=True).astype(int)
+precipitation = precipitation.drop(columns=["Precipitation_mm"])
+data = pd.merge(data, precipitation, on="Datum", how="left")
+
 data.to_csv("data.csv", index=False)
 
 training_df = data[(data["Datum"] >= "2013-07-01") & (data["Datum"] <= "2017-07-31")]
