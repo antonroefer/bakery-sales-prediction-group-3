@@ -13,6 +13,11 @@ data = data.sort_values(by=["Datum", "Warengruppe"]).reset_index(drop=True)
 # Create 'Wochenende' feature: 1 if Saturday or Sunday, else 0
 data["Wochenende"] = pd.to_datetime(data["Datum"]).dt.weekday.isin([5, 6]).astype(int)
 
+# Create 'Silvester' column: 1 if 'Datum' is December 31, else 0
+data["Silvester"] = (
+    pd.to_datetime(data["Datum"]).dt.strftime("%m-%d").eq("12-31").astype(int)
+)
+
 # Load wetter.csv and kiwo.csv
 wetter = pd.read_csv("Internal/wetter.csv")
 kiwo = pd.read_csv("Internal/kiwo.csv")
@@ -47,13 +52,17 @@ vpi = pd.read_csv("External/VPI_modified.csv")
 vpi["Datum"] = pd.to_datetime(vpi["Datum"]).dt.strftime("%Y-%m-%d")
 data = pd.merge(data, vpi[["Datum", "VPI"]], on="Datum", how="left")
 
-#Load precipitation data
-precipitation = pd.read_csv("External/precipitation.txt", sep= ",")
-precipitation["Datum"] = pd.to_datetime(precipitation["Datum"], format="%Y-%m-%d").dt.strftime("%Y-%m-%d")
+# Load precipitation data
+precipitation = pd.read_csv("External/precipitation.txt", sep=",")
+precipitation["Datum"] = pd.to_datetime(
+    precipitation["Datum"], format="%Y-%m-%d"
+).dt.strftime("%Y-%m-%d")
 # Create 'prec_categorie' column based on precipitation boundaries
 bins = [-float("inf"), 2.5, 7.5, 36, 65, float("inf")]
 labels = [0, 1, 2, 3, 4]
-precipitation["Niederschlag"] = pd.cut(precipitation["Precipitation_mm"], bins=bins, labels=labels, right=True).astype(int)
+precipitation["Niederschlag"] = pd.cut(
+    precipitation["Precipitation_mm"], bins=bins, labels=labels, right=True
+).astype(int)
 precipitation = precipitation.drop(columns=["Precipitation_mm"])
 data = pd.merge(data, precipitation, on="Datum", how="left")
 
