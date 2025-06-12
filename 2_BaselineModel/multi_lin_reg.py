@@ -16,9 +16,7 @@ data = pd.get_dummies(data, columns=["Warengruppe"], drop_first=False, dtype=int
 print(data.head())
 
 # Drop rows where 'Temperatur', 'Bewoelkung', or 'Windgeschwindigkeit' is NaN
-data = data.dropna(
-    subset=["Temperatur", "Bewoelkung", "Windgeschwindigkeit", "Wettercode"]
-)
+data = data.dropna(subset=["Temperatur", "Bewoelkung", "Windgeschwindigkeit"])
 for col in data.columns:
     print(f"{col}: {data[col].isna().sum()} NaNs")
 
