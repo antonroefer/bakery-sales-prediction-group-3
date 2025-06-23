@@ -55,7 +55,7 @@ early_stop = EarlyStopping(monitor="val_loss", patience=30, restore_best_weights
 history = model.fit(
     training_features,
     training_labels,
-    epochs=200,
+    epochs=1000,
     validation_data=(validation_features, validation_labels),
     callbacks=[early_stop],
 )
