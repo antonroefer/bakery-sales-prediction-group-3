@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 
 # Load the CSV files
 train = pd.read_csv("Internal/train.csv")
@@ -75,3 +76,33 @@ test_df = data[(data["Datum"] >= "2018-08-01") & (data["Datum"] <= "2019-07-31")
 print("\nTraining set shape:", training_df.shape)
 print("Validation set shape:", validation_df.shape)
 print("Test set shape:", test_df.shape)
+
+# Separating features and labels
+training_features = training_df.drop("price", axis=1)
+validation_features = validation_df.drop("price", axis=1)
+test_features = test_df.drop("price", axis=1)
+
+training_labels = training_df[["price"]]
+validation_labels = validation_df[["price"]]
+test_labels = test_df[["price"]]
+
+# Print dimensions of the dataframes
+print("Training features dimensions:", training_features.shape)
+print("Validation features dimensions:", validation_features.shape)
+print("Test features dimensions:", test_features.shape)
+print()
+print("Training labels dimensions:", training_labels.shape)
+print("Validation labels dimensions:", validation_labels.shape)
+print("Test labels dimensions:", test_labels.shape)
+
+# Create subdirectory for the pickle files
+subdirectory = "pickle_data"
+os.makedirs(subdirectory, exist_ok=True)
+
+# Export of the prepared data to subdirectory as pickle files
+training_features.to_pickle(f"{subdirectory}/training_features.pkl")
+validation_features.to_pickle(f"{subdirectory}/validation_features.pkl")
+test_features.to_pickle(f"{subdirectory}/test_features.pkl")
+training_labels.to_pickle(f"{subdirectory}/training_labels.pkl")
+validation_labels.to_pickle(f"{subdirectory}/validation_labels.pkl")
+test_labels.to_pickle(f"{subdirectory}/test_labels.pkl")
