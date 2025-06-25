@@ -4,7 +4,7 @@ from tensorflow.keras.metrics import MeanSquaredError as mean_squared_error
 
 # Load the trained model
 model = load_model("python_model_3.h5", custom_objects={"mse": mean_squared_error})
-model = load_model("python_model_2.keras")
+model = load_model("python_model_5.keras", compile=False)
 
 # Define the file paths
 subdirectory = "pickle_data"

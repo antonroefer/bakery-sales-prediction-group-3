@@ -6,6 +6,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.optimizers.schedules import ExponentialDecay
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.regularizers import l2
+import tensorflow as tf
 
 # Define the file paths
 subdirectory = "pickle_data"
@@ -37,18 +38,49 @@ model = Sequential(
 
 model.summary()
 
-initial_learning_rate = 0.0003  # or your starting learning rate
-decay_steps = 1000  # number of steps before applying decay
-decay_rate = 0.9  # decay factor (0 < decay_rate < 1)
+# Parameter
+initial_learning_rate = 0.00015
+decay_steps = 1000
+decay_rate = 0.99
+min_lr = 1e-5
 
-lr_schedule = ExponentialDecay(
-    initial_learning_rate,
-    decay_steps=decay_steps,
-    decay_rate=decay_rate,
-    staircase=True,  # if True, decays discrete step-wise; if False, decays smoothly
+
+# ExponentialDecay mit Minimum-Schranke
+class ExponentialDecayWithMin(tf.keras.optimizers.schedules.LearningRateSchedule):
+    def __init__(
+        self, initial_learning_rate, decay_steps, decay_rate, min_lr, staircase=True
+    ):
+        self.decay_schedule = ExponentialDecay(
+            initial_learning_rate=initial_learning_rate,
+            decay_steps=decay_steps,
+            decay_rate=decay_rate,
+            staircase=staircase,
+        )
+        self.min_lr = min_lr
+
+    def __call__(self, step):
+        return tf.maximum(self.decay_schedule(step), self.min_lr)
+
+    def get_config(self):
+        return {
+            "initial_learning_rate": self.decay_schedule.initial_learning_rate,
+            "decay_steps": self.decay_schedule.decay_steps,
+            "decay_rate": self.decay_schedule.decay_rate,
+            "min_lr": self.min_lr,
+            "staircase": self.decay_schedule.staircase,
+        }
+
+
+# Scheduler-Instanz
+lr_schedule = ExponentialDecayWithMin(
+    initial_learning_rate, decay_steps, decay_rate, min_lr, staircase=True
 )
 
-model.compile(loss="mse", optimizer=Adam(learning_rate=1 / 3 * initial_learning_rate))
+# Optimizer mit Scheduler
+optimizer = Adam(learning_rate=lr_schedule)
+
+# Model kompilieren
+model.compile(loss="mse", optimizer=optimizer)
 
 early_stop = EarlyStopping(monitor="val_loss", patience=30, restore_best_weights=True)
 
