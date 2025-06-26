@@ -28,7 +28,6 @@ test_labels = pd.read_pickle(test_labels_path)
 model = Sequential(
     [
         InputLayer(shape=(training_features.shape[1],)),
-        BatchNormalization(),
         Dense(16, activation="sigmoid", kernel_regularizer=l2(1e-3)),
         Dense(32, activation="relu", kernel_regularizer=l2(1e-3)),
         Dense(16, activation="relu", kernel_regularizer=l2(1e-3)),
@@ -39,10 +38,10 @@ model = Sequential(
 model.summary()
 
 # Parameter
-initial_learning_rate = 0.00015
+initial_learning_rate = 20e-5
 decay_steps = 1000
 decay_rate = 0.99
-min_lr = 1e-5
+min_lr = 1e-6
 
 
 # ExponentialDecay mit Minimum-Schranke
