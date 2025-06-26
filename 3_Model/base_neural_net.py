@@ -41,7 +41,7 @@ model.summary()
 initial_learning_rate = 20e-5
 decay_steps = 1000
 decay_rate = 0.99
-min_lr = 1e-6
+min_lr = 1e-8
 
 
 # ExponentialDecay mit Minimum-Schranke
@@ -81,7 +81,7 @@ optimizer = Adam(learning_rate=lr_schedule)
 # Model kompilieren
 model.compile(loss="mse", optimizer=optimizer)
 
-early_stop = EarlyStopping(monitor="val_loss", patience=30, restore_best_weights=True)
+early_stop = EarlyStopping(monitor="val_loss", patience=60, restore_best_weights=True)
 
 history = model.fit(
     training_features,
