@@ -8,7 +8,7 @@ The project presentation is your opportunity to showcase your entire machine lea
 
 ## Guidelines
 
-1.  **Introduction**: Briefly introduce your team and which team member was  responsible for which part of the project.
+1.  **Introduction**: Briefly introduce your team and which team member was responsible for which part of the project.
 
 2.  **Dataset Characteristics**: Provide a quick overview of the new variables you created. Show at least two bar charts with confidence intervals for newly created variables.
 

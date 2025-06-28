@@ -14,8 +14,8 @@ print("Test set shape:", test_df.shape)
 
 # Separating features and labels
 training_features = training_df.drop(["id", "Datum", "Umsatz"], axis=1)
-validation_features = validation_df.drop(["id", "Datum", "Umsatz"], axis=1)
-test_features = test_df.drop(["id", "Datum", "Umsatz"], axis=1)
+validation_features = validation_df.drop(["id", "Datum", "Umsatz", "Advent"], axis=1)
+test_features = test_df.drop(["id", "Datum", "Umsatz", "Advent"], axis=1)
 
 training_labels = training_df[["Umsatz"]]
 validation_labels = validation_df[["Umsatz"]]

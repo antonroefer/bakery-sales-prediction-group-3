@@ -1,0 +1,6 @@
+Warengruppe_1: 25.5096%
+Warengruppe_2: 14.6359%
+Warengruppe_3: 20.7997%
+Warengruppe_4: 26.8823%
+Warengruppe_5: 17.0401%
+Warengruppe_6: 51.8399%
