@@ -35,13 +35,11 @@ model = Sequential(
     ]
 )
 
-model.summary()
-
 # Parameter
-initial_learning_rate = 20e-5
+initial_learning_rate = 30e-5
 decay_steps = 1000
 decay_rate = 0.99
-min_lr = 1e-8
+min_lr = 5e-6
 
 
 # ExponentialDecay mit Minimum-Schranke
@@ -74,24 +72,21 @@ class ExponentialDecayWithMin(tf.keras.optimizers.schedules.LearningRateSchedule
 lr_schedule = ExponentialDecayWithMin(
     initial_learning_rate, decay_steps, decay_rate, min_lr, staircase=True
 )
-
 # Optimizer mit Scheduler
 optimizer = Adam(learning_rate=lr_schedule)
 
 # Model kompilieren
 model.compile(loss="mse", optimizer=optimizer)
-
 early_stop = EarlyStopping(monitor="val_loss", patience=60, restore_best_weights=True)
-
 # Combine training and validation data
-combined_features = pd.concat(
-    [training_features, validation_features], ignore_index=True
-)
-combined_labels = pd.concat([training_labels, validation_labels], ignore_index=True)
+# combined_features = pd.concat(
+#     [training_features, validation_features], ignore_index=True
+# )
+# combined_labels = pd.concat([training_labels, validation_labels], ignore_index=True)
 
 history = model.fit(
-    combined_features,
-    combined_labels,
+    training_features,
+    training_labels,
     epochs=1000,
     validation_data=(validation_features, validation_labels),
     callbacks=[early_stop],
