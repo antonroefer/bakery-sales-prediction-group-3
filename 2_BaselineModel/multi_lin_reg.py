@@ -4,11 +4,12 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Load the CSV file from the 0_DataPreparation directory
-data = pd.read_csv("../0_DataPreparation/data.csv")
+data_full = pd.read_csv("./data_after_imputation.csv")
 
 # Convert 'Datum' column to datetime and filter data up to 31.07.2018
-data["Datum"] = pd.to_datetime(data["Datum"])
-data = data[data["Datum"] <= "2018-07-31"]
+data_full["Datum"] = pd.to_datetime(data_full["Datum"])
+data = data_full[data_full["Datum"] <= "2018-07-31"]
+test = data_full[data_full["Datum"] > "2018-07-31"]
 
 # One-hot encode 'Warengruppe'
 data = pd.get_dummies(data, columns=["Warengruppe"], drop_first=False, dtype=int)
@@ -99,3 +100,14 @@ results = model.fit()  # Fit the model
 
 # Print the summary of the regression results
 print(results.summary())
+
+# Predict Umsatz for the test dataset
+X_test = sm.add_constant(test[features])
+test["Umsatz"] = results.predict(X_test)
+
+# Optionally, display the first few predictions
+print(test.head())
+
+# Export 'id' and predicted 'Umsatz' for the test set as submission.csv
+submission = test[["id", "Umsatz"]]
+submission.to_csv("submission_all.csv", index=False)
