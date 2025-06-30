@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestRegressor
 
 # Define the file paths
-subdirectory = "GA_pickle_data"
+subdirectory = "../3_Model/GA_pickle_data"
 training_features_path = f"{subdirectory}/training_features.pkl"
 validation_features_path = f"{subdirectory}/validation_features.pkl"
 test_features_path = f"{subdirectory}/test_features.pkl"
