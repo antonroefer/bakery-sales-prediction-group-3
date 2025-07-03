@@ -2,7 +2,7 @@
 
 1. Organised the data into internal (provided by opencampus.sh) and external (data we found on the internet) folders.
 
-2. Loaded and merged data
+2. Loaded and merged data frames
 
 3. Created new variables
 
@@ -20,5 +20,4 @@
 
     Niederschlag: Categorical variable (0–4) representing rainfall levels based on defined precipitation bins
 
-4. Arranged the Temperur variable
-
+Main file for creating our *data.csv*: dataset.py
