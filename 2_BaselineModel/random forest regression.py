@@ -1,4 +1,9 @@
-# Trying to fo a random forest regression on the data
+# Here we load the training features and labels from pickle files, 
+#    fit a Random Forest model, and visualize the feature importances.
+# We used that while working on the Neural Network, where the first part of the code
+#    includes some features selection and then we wanted to see how important the features are.
+
+
 import os
 import pandas as pd
 import numpy as np
@@ -6,24 +11,16 @@ import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestRegressor
 
 # Define the file paths
-subdirectory = "GA_pickle_data"
+subdirectory = "./../3_Model/pickle_data"
 training_features_path = f"{subdirectory}/training_features.pkl"
-validation_features_path = f"{subdirectory}/validation_features.pkl"
-test_features_path = f"{subdirectory}/test_features.pkl"
 training_labels_path = f"{subdirectory}/training_labels.pkl"
-validation_labels_path = f"{subdirectory}/validation_labels.pkl"
-test_labels_path = f"{subdirectory}/test_labels.pkl"
 
 # Read the pickle files
 training_features = pd.read_pickle(training_features_path)
-validation_features = pd.read_pickle(validation_features_path)
-test_features = pd.read_pickle(test_features_path)
 training_labels = pd.read_pickle(training_labels_path)
-validation_labels = pd.read_pickle(validation_labels_path)
-test_labels = pd.read_pickle(test_labels_path)
 
 
-# The rest here is for the random forest regression
+# random forest regression
 
 # Convert labels to 1D numpy array
 y_train = training_labels.to_numpy().ravel()

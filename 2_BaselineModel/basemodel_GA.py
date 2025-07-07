@@ -3,9 +3,8 @@
 
 # Run linear regressions on the training set only 01.07.2013 to 31.07.2017.
 # Use the validation set to check model’s performance.
-# For example, after fitting a model, predict Umsatz on the validation set (data from 01.08.2017 to 31.07.2018).
-# Calculate metrics like RMSE or R² to see how well your model generalizes.
-# test it on the test set (from 01.08.2018 to 31.07.2019)
+# Calculate metrics like RMSE or R² to see how well the model generalizes.
+# Test it on the test set (from 01.08.2018 to 31.07.2019) and create a kaggle submission file.
 
 # Libraries
 import pandas as pd
@@ -24,9 +23,8 @@ print(data.columns)
 data = data.drop(columns=["Wettercode"])  # Drop the 'Wettercode' column entirely
 
 # NAs in these cols  so drop
-# data = data.dropna(
-#    subset=["Temperatur", "Bewoelkung", "Windgeschwindigkeit"])
-
+data = data.dropna(
+    subset=["Temperatur", "Bewoelkung", "Windgeschwindigkeit"])
 
 # One-hot encode 'Warengruppe' in the full dataset
 data = pd.get_dummies(data, columns=["Warengruppe"], prefix="Warengruppe", dtype=int)
@@ -140,19 +138,3 @@ print(submission.head())
 # # Save to CSV
 # submission.to_csv("submission.csv", index=False)
 # #print("✅ Submission file saved as submission.csv")
-
-
-# #count nas in submission
-# print("\nMissing values in submission:")
-# print(submission.isna().sum())
-
-
-# #see missing values in each col of wetter dataset from the internal
-# missingdatacheck = pd.read_csv("../0_DataPreparation/data.csv")
-# print("\nMissing values in original data:")
-# print(missingdatacheck.isna().sum())
-
-# #see dates of the days with missing values in the original data
-# missing_dates = missingdatacheck[missingdatacheck.isna().any(axis=1)]["Datum"]
-# print("\nDates with missing values in original data:")
-# print(missing_dates.sort_values().unique())

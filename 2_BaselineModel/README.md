@@ -1,6 +1,6 @@
 # Baseline Model
 
-For our Baseline Model we used Regressions_GA.py for our kaggle submissions firstly, but after data imputation, we created a new model basemodel_roefer.py, which improved the private kaggle score a bit.
+For our Baseline Model we used basemodel_GA.py for our kaggle submissions firstly, but after data imputation, we created a new model basemodel_roefer.py, which improved the private kaggle score a bit.
 
 All submission CSVs from this model, which can be found in kaggle, are in the folder aswell.
 
