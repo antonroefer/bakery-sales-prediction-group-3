@@ -1,17 +1,23 @@
-import pandas as pd
-import statsmodels.api as sm
-import seaborn as sns
-import matplotlib.pyplot as plt
+# Import necessary libraries
+import pandas as pd  # For data manipulation and analysis
+import statsmodels.api as sm  # For statistical models, including OLS regression
 
-# Load the CSV file from the 0_DataPreparation directory
-data_full = pd.read_csv("./data_after_imputation.csv")
+# Load the full dataset from a CSV file located in a relative directory
+data_full = pd.read_csv(
+    "../1_DatasetCharacteristics/imputed_data/data_after_imputation_knn.csv"
+)
 
-# Convert 'Datum' column to datetime and filter data up to 31.07.2018
+# Convert the 'Datum' column from string to datetime objects for time-based filtering
 data_full["Datum"] = pd.to_datetime(data_full["Datum"])
+
+# Split the data into a training + validation set and a test set based on the date
+# Training and Validation data includes all records up to and including 31.07.2018
 data = data_full[data_full["Datum"] <= "2018-07-31"]
+# Test data includes all records after 31.07.2018
 test = data_full[data_full["Datum"] > "2018-07-31"]
 
 
+# Define the list of feature columns to be used as independent variables in the model
 features = [
     "Wochenende",
     "Silvester",
@@ -42,75 +48,30 @@ features = [
     "Warengruppe_6",
 ]
 
-# Create a column for Warengruppe marker (1-6)
-data["Warengruppe_marker"] = (
-    data[
-        [
-            "Warengruppe_1",
-            "Warengruppe_2",
-            "Warengruppe_3",
-            "Warengruppe_4",
-            "Warengruppe_5",
-            "Warengruppe_6",
-        ]
-    ]
-    .idxmax(axis=1)
-    .str.extract("(\d)")
-    .astype(int)
-)
+# Prepare the data for the regression model
+Y = data["Umsatz"]  # Define the dependent variable (target)
+X = sm.add_constant(
+    data[features]
+)  # Define the independent variables (features) and add a constant for the intercept
 
-# Select features for pairplot (add/remove as needed)
-pairplot_features = [
-    "Umsatz",
-    "Temperatur",
-    "Niederschlag",
-    "VPI",
-    "Wochenende",
-    "Silvester",
-    "KielerWoche",
-    "Schulferien",
-    "Feiertage",
-]
+# Create and fit the Ordinary Least Squares (OLS) regression model
+model = sm.OLS(Y, X)  # Initialize the OLS model
+results = model.fit()  # Fit the model to the data
 
-sns.pairplot(
-    data[features + ["Warengruppe_marker"] + ["Umsatz"]],
-    x_vars=[
-        "Temperatur",
-        "VPI",
-        "Silvester",
-        "Feiertage",
-        "KielerWoche",
-        "Wettercode_0",
-        "Wettercode_10",
-        "Wettercode_21",
-        "Wettercode_5",
-        "Wettercode_61",
-        "Wettercode_63",
-        "Wettercode_nan",
-        "Wettercode_rest",
-    ],
-    y_vars=["Umsatz"],
-    hue="Warengruppe_marker",
-    palette="tab10",
-    plot_kws={"alpha": 0.7},
-)
-plt.show()
-
-Y = data["Umsatz"]
-X = sm.add_constant(data[features])  # Add a constant term for the intercept
-model = sm.OLS(Y, X)  # Ordinary Least Squares regression
-results = model.fit()  # Fit the model
-
-# Print the summary of the regression results
+# Print the detailed summary of the regression results
 print(results.summary())
 
-# Predict Umsatz for the test dataset
-X_test = sm.add_constant(test[features])
-test["Umsatz"] = results.predict(X_test)
+# Use the trained model to make predictions on the test set
+X_test = sm.add_constant(test[features])  # Prepare the test features, adding a constant
+test["Umsatz"] = results.predict(
+    X_test
+)  # Predict 'Umsatz' and store it in the test dataframe
 
-# Optionally, display the first few predictions
+# Display the first few rows of the test data with the new predictions
 print(test.head())
 
-# Export 'id' and predicted 'Umsatz' for the test set as submission.csv
+# Prepare the final submission file
+# Select the 'id' and predicted 'Umsatz' columns from the test set
 submission = test[["id", "Umsatz"]]
+# Export the submission dataframe to a CSV file without the pandas index
 submission.to_csv("submission_all.csv", index=False)

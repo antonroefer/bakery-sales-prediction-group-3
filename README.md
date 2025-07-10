@@ -2,7 +2,7 @@
 
 ## Repository Link
 
-https://github.com/your_username/your_project_name
+[Github Project](https://github.com/antonroefer/bakery-sales-prediction-group-3)
 
 ## Description
 
@@ -14,15 +14,15 @@ Regression
 
 ### Results Summary
 
--   **Best Model:** [Name of the best-performing model]
+-   **Best Model:** [python_model_GA_1.keras]
 -   **Evaluation Metric:** MAPE
 -   **Result by Category** (Identifier):
-    -   **Bread** (1): [XX]%
-    -   **Rolls** (2): [XX]%
-    -   **Croissant** (3): [XX]%
-    -   **Confectionery** (4): [XX]%
-    -   **Cake** (5): [XX]%
-    -   **Seasonal Bread** (6): [XX]%
+    -   **Bread** (1): [20.29]%
+    -   **Rolls** (2): [15.52]%
+    -   **Croissant** (3): [19.75]%
+    -   **Confectionery** (4): [22.85]%
+    -   **Cake** (5): [17.95]%
+    -   **Seasonal Bread** (6): [50.12]%
 
 ## Documentation
 
