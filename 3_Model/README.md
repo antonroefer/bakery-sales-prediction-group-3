@@ -2,10 +2,7 @@ We built a Neural Network using Keras to predict bakery sales (Umsatz). The Jupy
 
 # Data preparation
 
-We manually removed columns that we considered less relevant or potentially noisy, such as:
-
--Calendar variables: Silvester, Feiertage, Wahltag, Advent, etc.
--Weather variables: Bewoelkung, Niederschlag, some Wettercode_* columns
+We manually removed columns that we considered less relevant or potentially noisy, such as some calendar variables (Silvester, Feiertage, Wahltag, Advent) and weather variables (Bewoelkung, Niederschlag).
 
 This step helped simplify the model and focus on more useful predictors. Based on experimentation our best performing attempt was the one where
 we kept the  Temperatur, Schulferien, Weekday, days_to_silvester and Warengruppe_1 to Warengruppe_6 variables.
