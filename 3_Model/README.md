@@ -1,14 +1,21 @@
-We built a Neural Network using Keras to predict bakery sales (Umsatz). The Jupyter Noterbook includes the steps for data preparation, building and training the model, and evaluating its performance — overall and by product group (Warengruppe).
+We built a Neural Network using Keras to predict bakery sales (Umsatz). The [Jupyter Noterbook](./Neural_Network_Group3.ipynb) includes the steps for additional data preparation, building and training the model, and evaluating its performance — overall and by product group (Warengruppe).
 
-# Data preparation
+# Additional data preparation
 
-We manually removed columns that we considered less relevant or potentially noisy, such as some calendar variables (Silvester, Feiertage, Wahltag, Advent) and weather variables (Bewoelkung, Niederschlag).
+We manually removed columns step by step that either we considered less relevant and potentially noisy or that were suggested irrelevant by our [random forest regression](./../2_BaselineModel/random%20forest%20regression.py), such as some calendar variables (Silvester, Feiertage, Wahltag, Advent) and weather variables (Bewoelkung, Niederschlag).
 
-This step helped simplify the model and focus on more useful predictors. Based on experimentation our best performing attempt was the one where
-we kept the  Temperatur, Schulferien, Weekday, days_to_silvester and Warengruppe_1 to Warengruppe_6 variables.
+These steps helped to simplify the model and focus on more useful predictors. Based on experimentation our best performing attempt was the one where
+we kept the Temperatur, Schulferien, Weekday, days_to_silvester and Warengruppe_1 to Warengruppe_6 variables.
 
 Before training, all input features were scaled using StandardScaler to standardize their ranges.
 
+# Hyper parameter tuning
+
+Our Hyperparameter tuning was a quite similar process as the feature selection: We started with a quite complex model with up to 128 Neurons per Hidden Layer, with a sigmoid activation function for the first Layer and ReLU for the others, aswell as L2 regularization for each Hidden Layer and 3 DropOut Layers in between the Hidden Layers - suggested by ChatGPT.
+
+Step by step, we dropped the DropOut Layers (pun intended), aswell as the HiddenLayer with the sigmoid activation which lead to more reliable results and smoother loss curves. With sigmoid we had these little plateaus for the first few epochs, which can be seen in this [figure](./archived/loss%20plots/Keras_N_OB_3.png) for example.
+
+Our final and best model can be seen below:
 
 # Model characteristics
 
